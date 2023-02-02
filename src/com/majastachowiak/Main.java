@@ -1,0 +1,13 @@
+package com.majastachowiak;
+
+
+public class Main {
+
+    public static void main(String[] args) throws Exception{
+
+        System.out.println("MOUNTAIN CLUB MEMBERS");
+
+        DataBase.post();
+
+    }
+}
