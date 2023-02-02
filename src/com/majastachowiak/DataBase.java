@@ -1,9 +1,6 @@
 package com.majastachowiak;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class DataBase {
@@ -11,12 +8,8 @@ public class DataBase {
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test", "root", "");
-            if (connection == null){
-                System.out.println("Not connected");
-            } else {
-                System.out.println("Connected");
-            }
             return connection;
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -43,7 +36,20 @@ public class DataBase {
 
     }
 
-    public static void post() throws Exception {
+    public static void deleteTable () throws  Exception {
+        try {
+            Connection connection = getConnection();
+            PreparedStatement delete = connection.prepareStatement("DROP TABLE Mountain_Club_Members ");
+            delete.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addMember() throws Exception {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the name of the new member: ");
@@ -77,6 +83,31 @@ public class DataBase {
             );
 
             posted.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showEverything() throws  Exception {
+
+        try {
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Mountain_Club_Members");
+            ResultSet result = statement.executeQuery();
+
+            while(result.next()) {
+                System.out.println("Member nr: " + (result.getInt("id")));
+                System.out.println("Name: " + (result.getString("name")));
+                System.out.println("Surname: " + (result.getString("surname")));
+                System.out.println("Age: " + (result.getInt("age")));
+                System.out.println("Advancement: " + (result.getInt("advancement")));
+                System.out.println("Highest peak: " + (result.getInt("highest_peak")));
+                System.out.println("Phone number: " + (result.getInt("phoneNumber")));
+                System.out.println();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
